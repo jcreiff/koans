@@ -28,9 +28,42 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 # More scoring examples are given in the tests below:
 #
 # Your goal is to write the score method.
-
+require 'byebug'
 def score(dice)
-  # You need to write this method
+  score = 0
+  copy = dice.clone
+
+  if check_triples(copy).count == (dice.count - 3)
+    triple = dice - check_triples(copy)
+    dice = check_triples(dice.clone)
+    if triple[0] == 1
+      score += 1000
+    else
+      score += triple[0] * 100
+    end
+  end
+  dice.each do |x|
+    score += 50 if x == 5
+    score += 100 if x == 1
+  end
+  return score
+end
+
+def check_triples(array)
+  first = array.shift
+  array.each_with_index do |a, b|
+    if a == first
+      array.delete_at(b)
+      break
+    end
+  end
+  array.each_with_index do |a, b|
+    if a == first
+      array.delete_at(b)
+      break
+    end
+  end
+  return array
 end
 
 class AboutScoringProject < Neo::Koan
@@ -71,7 +104,7 @@ class AboutScoringProject < Neo::Koan
     assert_equal 550, score([5,5,5,5])
     assert_equal 1100, score([1,1,1,1])
     assert_equal 1200, score([1,1,1,1,1])
-    assert_equal 1150, score([1,1,1,5,1])
+    assert_equal 1150, score([1,1,1,1,5])
   end
 
 end

@@ -99,5 +99,5 @@ class AboutSymbols < Neo::Koan
   # THINK ABOUT IT:
   #
   # Why is it not a good idea to dynamically create a lot of symbols?
-    # There are 3295 of them in Ruby, and you could inadvertently overwrite one
+    # Once they take up a space in memory, they never go away! (Garbage collection)
 end
